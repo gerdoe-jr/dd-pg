@@ -172,6 +172,13 @@ pub mod flag {
                             Some(intersection.base.game_element_id),
                             SimulationEventWorldEntityType::Flag {
                                 id: self.base.game_element_id,
+                                ev: FlagEvent::Grab,
+                            },
+                        );
+                        self.simulation_events.push(
+                            Some(intersection.base.game_element_id),
+                            SimulationEventWorldEntityType::Flag {
+                                id: self.base.game_element_id,
                                 ev: FlagEvent::Sound {
                                     pos: self.core.pos / 32.0,
                                     ev: GameFlagEventSound::Collect(self.core.ty),

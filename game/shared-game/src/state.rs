@@ -92,7 +92,6 @@ pub mod state {
     use crate::stage::stage::Stages;
     use crate::types::types::{GameOptions, GameType};
     use crate::weapons::definitions::weapon_def::Weapon;
-    use crate::world::world::GameWorld;
 
     use super::super::{
         collision::collision::Collision, entities::character::character::Character,
@@ -254,7 +253,7 @@ pub mod state {
                 .unwrap_or_default();
 
             let game_type = match config.game_type {
-                ConfigGameType::Ctf => GameType::Team,
+                ConfigGameType::Ctf | ConfigGameType::Tdm => GameType::Team,
                 ConfigGameType::Dm => GameType::Solo,
             };
 
@@ -309,7 +308,7 @@ pub mod state {
                 }),
 
                 // game
-                game_options: GameOptions::new(game_type, config.score_limit),
+                game_options: GameOptions::new(game_type, config.score_limit, matches!(config.game_type, ConfigGameType::Ctf)),
                 config: config.clone(),
                 chat_commands: chat_commands.clone(),
                 rcon_commands: rcon_commands.clone(),
@@ -347,13 +346,14 @@ pub mod state {
 
                     mod_name: match config.game_type {
                         ConfigGameType::Dm => "dm".try_into().unwrap(),
+                        ConfigGameType::Tdm => "tdm".try_into().unwrap(),
                         ConfigGameType::Ctf => "ctf".try_into().unwrap(),
                     },
                     version: "pre-alpha".to_string(),
                     options: GameStateServerOptions {
                         physics_group_name: "vanilla".try_into().unwrap(),
                         allow_stages: config.allow_stages,
-                        use_vanilla_sides: matches!(config.game_type, ConfigGameType::Ctf),
+                        use_vanilla_sides: matches!(config.game_type, ConfigGameType::Ctf | ConfigGameType::Tdm),
                         use_account_name: has_accounts,
                     },
                 },
@@ -513,7 +513,8 @@ pub mod state {
             }
         }
 
-        fn on_character_spawn(world: &mut GameWorld, character_id: &GameEntityId) {
+        fn on_character_spawn(&mut self, stage_id: &GameEntityId, character_id: &GameEntityId) {
+            let world = &mut self.game.stages.get_mut(&stage_id).unwrap().world;
             let character = world.characters.get_mut(character_id).unwrap();
             let core = &mut character.core;
 
@@ -618,8 +619,8 @@ pub mod state {
                     ),
                 };
 
-                GameState::on_character_spawn(
-                    &mut self.game.stages.get_mut(&stage_id).unwrap().world,
+                self.on_character_spawn(
+                    &stage_id,
                     &char_id,
                 );
             }
@@ -1470,8 +1471,8 @@ pub mod state {
             )
             .base
             .game_element_id;
-            Self::on_character_spawn(
-                &mut self.game.stages.get_mut(&self.stage_0_id).unwrap().world,
+            self.on_character_spawn(
+                &self.stage_0_id.clone(),
                 &char_id,
             );
 
@@ -1656,8 +1657,8 @@ pub mod state {
                                     None,
                                     0,
                                 );
-                                Self::on_character_spawn(
-                                    &mut self.game.stages.get_mut(&stage_id).unwrap().world,
+                                self.on_character_spawn(
+                                    &stage_id,
                                     player_id,
                                 );
                             }
@@ -2090,7 +2091,8 @@ pub mod state {
                                         );
                                     }
                                     FlagEvent::Effect { ev, .. } => match ev {},
-                                    FlagEvent::Capture { .. } => {
+                                    FlagEvent::Grab
+                                    | FlagEvent::Capture { .. } => {
                                         // ignore, not sent to client
                                     }
                                 }

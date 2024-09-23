@@ -52,7 +52,7 @@ fn impl_mod(base_tokens: TokenStream, mod_tokens: TokenStream) -> TokenStream {
     if let Item::Mod(mod_input) = mod_input {
         let base_input = base_input.items.last_mut().unwrap();
         if let Item::Mod(base_input) = base_input {
-            base_input.ident = mod_input.ident;
+            assert!(base_input.ident == mod_input.ident, "mod name differed");
 
             // rewrite base uses
             /*for item in &mut base_input.content.as_mut().unwrap().1 {
@@ -85,7 +85,10 @@ fn impl_mod(base_tokens: TokenStream, mod_tokens: TokenStream) -> TokenStream {
                                     // find the funcion in the base impls
                                     for item_base in &mut base_input.content.as_mut().unwrap().1 {
                                         if let Item::Impl(base_impl) = item_base {
-                                            for base_impl_item in &mut base_impl.items {
+                                            if base_impl.self_ty != mod_impl.self_ty {
+                                                continue;
+                                            }
+                                            for base_impl_item in base_impl.items.iter_mut() {
                                                 match base_impl_item {
                                                     ImplItem::Const(_) => todo!(),
                                                     ImplItem::Fn(base_func) => {

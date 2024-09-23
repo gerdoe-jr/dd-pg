@@ -1,6 +1,7 @@
 use hiarc::Hiarc;
 use num_derive::FromPrimitive;
 use serde::{Deserialize, Serialize};
+use config::ConfigInterface;
 pub use strum::{EnumCount, EnumIter};
 
 // TODO: move this somewhere better
@@ -20,6 +21,7 @@ pub use strum::{EnumCount, EnumIter};
     Ord,
     EnumCount,
     EnumIter,
+    ConfigInterface,
 )]
 pub enum WeaponType {
     #[default]

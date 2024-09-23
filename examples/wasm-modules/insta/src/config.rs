@@ -1,4 +1,5 @@
 use config::{config_default, ConfigInterface};
+use game_interface::types::weapons::WeaponType;
 use serde::{Deserialize, Serialize};
 
 #[derive(
@@ -28,4 +29,5 @@ pub struct ConfigVanilla {
     #[default = 100]
     pub score_limit: u64,
     pub allow_stages: bool,
+    pub weapon: WeaponType
 }

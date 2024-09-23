@@ -60,7 +60,9 @@ pub mod match_manager {
                                 if let Some(char) = killer_id.and_then(|killer_id| world.characters.get_mut(&killer_id)) {
                                     char.core.score += 1;
                                     if let (MatchType::Sided { scores }, Some(team)) = (&mut game_match.ty, char.core.side) {
-                                        scores[team as usize] += 1;
+                                        if !self.game_options.enabled_flags {
+                                            scores[team as usize] += 1;
+                                        }
                                     }
                                     game_match.win_check(game_options, &[char]);
                                 }
@@ -76,6 +78,15 @@ pub mod match_manager {
                                             game_match.win_check(game_options, &[char]);
                                         }
                                     },
+                                    FlagEvent::Grab => {
+                                        if let Some(char) = entity_ev.owner_id.and_then(|character_id| world.characters.get_mut(&character_id)) {
+                                            char.core.score += 1;
+                                            if let (MatchType::Sided { scores }, Some(team)) = (&mut game_match.ty, char.core.side) {
+                                                scores[team as usize] += 1;
+                                            }
+                                            game_match.win_check(game_options, &[char]);
+                                        }
+                                    }
                                     FlagEvent:: Despawn {
                                       ..
                                     } |
@@ -103,7 +114,7 @@ pub mod match_manager {
         /// returns true, if match needs a restart
         #[must_use]
         pub fn tick(&mut self, world: &mut GameWorld) -> bool {
-            if matches!(self.game_match.ty, MatchType::Sided { .. }) {
+            if self.game_options.enabled_flags {
                 CtfController::tick(world);
             }
 

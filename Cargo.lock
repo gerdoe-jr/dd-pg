@@ -3870,11 +3870,13 @@ name = "game-interface"
 version = "0.1.0"
 dependencies = [
  "accounts-types",
+ "anyhow",
  "ascii",
  "base",
  "base-io",
  "bitflags 2.6.0",
  "command-parser",
+ "config",
  "either",
  "game-database",
  "hashlink 0.8.3",
@@ -4818,6 +4820,47 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e05c02b5e89bff3b946cedeca278abc628fe811e604f027c45a8aa3cf793d0eb"
 dependencies = [
  "libc",
+]
+
+[[package]]
+name = "insta"
+version = "0.1.0"
+dependencies = [
+ "accounts-types",
+ "anyhow",
+ "api",
+ "api-macros",
+ "api-state",
+ "api-wasm-macros",
+ "arrayvec 0.7.6",
+ "async-trait",
+ "base",
+ "base-io",
+ "base-log",
+ "bincode",
+ "chrono",
+ "command-parser",
+ "config",
+ "flate2",
+ "game-database",
+ "game-interface",
+ "graphics-types",
+ "hashlink 0.8.3",
+ "hiarc",
+ "log",
+ "map",
+ "math",
+ "num",
+ "num-derive",
+ "num-traits",
+ "pool",
+ "rayon",
+ "rustc-hash 2.0.0",
+ "serde",
+ "serde_json",
+ "shared-base",
+ "shared-game",
+ "thiserror",
 ]
 
 [[package]]

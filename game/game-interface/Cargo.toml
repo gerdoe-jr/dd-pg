@@ -11,11 +11,13 @@ command-parser = { path = "../command-parser" }
 base = { path = "../../lib/base" }
 base-io = { path = "../../lib/base-io" }
 math = { path = "../../lib/math" }
+config = { path = "../../lib/config" }
 pool = { path = "../../lib/pool", features = ["enable_hiarc"] }
 hiarc = { path = "../../lib/hiarc", features = ["derive", "enable_hashlink", "enable_ascii"] }
 game-database = { path = "../../lib/game-database" }
 
 # non-local libs
+anyhow = { version = "1.0.86", features = ["backtrace"] }
 serde = { version = "1.0.208", features = ["derive"] }
 num-derive = "0.4.2"
 num-traits = "0.2.19"

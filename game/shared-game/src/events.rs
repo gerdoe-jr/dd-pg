@@ -72,9 +72,11 @@ pub mod events {
             pos: vec2,
             ev: GameFlagEventEffect,
         },
+        Grab,
         Capture {
             pos: vec2,
         },
+        
     }
 
     #[derive(Debug, Hiarc, Serialize, Deserialize)]

@@ -15,14 +15,15 @@ pub mod types {
     pub struct GameOptionsInner {
         pub ty: GameType,
         pub score_limit: u64,
+        pub enabled_flags: bool
     }
 
     #[derive(Debug, Hiarc, Clone, Copy)]
     pub struct GameOptions(GameOptionsInner);
 
     impl GameOptions {
-        pub fn new(ty: GameType, score_limit: u64) -> Self {
-            Self(GameOptionsInner { ty, score_limit })
+        pub fn new(ty: GameType, score_limit: u64, enabled_flags: bool) -> Self {
+            Self(GameOptionsInner { ty, score_limit, enabled_flags })
         }
     }
 

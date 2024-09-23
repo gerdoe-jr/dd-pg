@@ -947,6 +947,7 @@ pub mod world {
                         }
                         FlagEvent::Sound { .. }
                         | FlagEvent::Effect { .. }
+                        | FlagEvent::Grab
                         | FlagEvent::Capture { .. } => {
                             // ignore
                         }
