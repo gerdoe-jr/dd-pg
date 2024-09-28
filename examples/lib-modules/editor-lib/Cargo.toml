@@ -1,0 +1,18 @@
+[package]
+name = "editor-lib"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+editor = { path = "../../../game/editor" }
+config = { path = "../../../lib/config" }
+graphics = { path = "../../../lib/graphics" }
+sound = { path = "../../../lib/sound" }
+base-io = { path = "../../../lib/base-io" }
+ui-base = { path = "../../../lib/ui-base" }
+rayon = "1.10.0"
+once_cell = "1.19.0"
+egui = { git = "https://github.com/emilk/egui", rev = "a9a6e0c2f223419d52a90cb3d40e211810caf1ee", features = ["serde"] }
+
+[lib]
+crate-type = ["cdylib"]

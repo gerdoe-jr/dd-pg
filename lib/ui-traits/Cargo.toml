@@ -1,0 +1,8 @@
+[package]
+name = "ui-traits"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ui-base = { path = "../ui-base" }
+egui = { git = "https://github.com/emilk/egui", rev = "a9a6e0c2f223419d52a90cb3d40e211810caf1ee", features = ["serde"] }
